@@ -307,13 +307,13 @@ Playwright will wait for the page to reach the load state prior to moving forwar
 
 Playwright 将在页面到达加载状态之前等待，然后再继续。<br>
 
-Learn more about the `[page.goto()](https://playwright.dev/python/docs/api/class-page)` options.<br>
+Learn more about the [`page.goto()`](https://playwright.dev/python/docs/api/class-page) options.<br>
 
 了解更多关于 `page.goto()` 选项的信息。<br>
 
 #### Interactions(交互):
 
-Performing actions starts with locating the elements.Playwright uses `[Locators API](https://playwright.dev/python/docs/locators)` for that.<br>
+Performing actions starts with locating the elements.Playwright uses [`Locators API`](https://playwright.dev/python/docs/locators)` for that.<br>
 
 执行操作从定位元素开始。Playwright 使用 [`Locators API`](https://playwright.dev/python/docs/locators) 来实现这一点。<br> 
 
