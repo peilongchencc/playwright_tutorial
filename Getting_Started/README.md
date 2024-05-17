@@ -8,7 +8,12 @@
     - [`test_` 前缀补充:](#test_-前缀补充)
     - [Running the Example Test(运行示例测试):](#running-the-example-test运行示例测试)
     - [Updating Playwright(更新 Playwright):](#updating-playwright更新-playwright)
-  - [](#)
+  - [Writing tests(编写测试):](#writing-tests编写测试)
+    - [Introduction(简介):](#introduction简介)
+    - [How to write the first test:](#how-to-write-the-first-test)
+    - [How to perform actions(如何执行操作):](#how-to-perform-actions如何执行操作)
+      - [Navigation(导航):](#navigation导航)
+      - [Interactions(交互):](#interactions交互)
 
 ## Installation
 
@@ -225,4 +230,97 @@ pip install pytest-playwright playwright -U
 ```
 
 
-## 
+## Writing tests(编写测试):
+
+### Introduction(简介):
+
+Playwright tests are simple, they / Playwright 测试很简单，它们<br>
+
+- **perform actions**, and / 执行操作，并且
+
+- **assert the state** against expectations / 可根据期望反馈断言(assert)状态
+
+There is no need to wait for anything prior to performing an action:<br>
+
+在执行操作之前不需要等待任何东西：<br>
+
+Playwright automatically waits for the wide range of actionability checks to pass prior to performing each action.<br>
+
+Playwright 会在执行每个操作之前自动等待各种可操作性检查通过。<br>
+
+There is also no need to deal with the race conditions when performing the checks - Playwright assertions are designed in a way that they describe the expectations that need to be eventually met.<br>
+
+也不需要处理执行检查时的竞争条件——Playwright 断言的设计方式是描述最终需要满足的期望。<br>
+
+That's it! These design choices allow Playwright users to forget about flaky timeouts and racy checks in their tests altogether.<br>
+
+就是这样！这些设计选择使得 Playwright 用户可以完全忘记测试中的不稳定超时和竞争检查。<br>
+
+
+### How to write the first test:
+
+Take a look at the following example to see how to write a test.<br>
+
+请看以下示例，了解如何编写测试。<br>
+
+Note how the file name follows the `test_` prefix convention as well as each test name.<br>
+
+注意文件名和每个测试名称是如何遵循 `test_` 前缀约定的。<br>
+
+> 其实就是 Installation 篇中的示例。
+
+```python
+# test_example.py
+# 需要开启代理才能访问 "https://playwright.dev/"。
+import re
+from playwright.sync_api import Page, expect
+
+def test_has_title(page: Page):
+    page.goto("https://playwright.dev/")
+
+    # Expect a title "to contain" a substring.
+    expect(page).to_have_title(re.compile("Playwright"))
+
+def test_get_started_link(page: Page):
+    page.goto("https://playwright.dev/")
+
+    # Click the get started link.
+    page.get_by_role("link", name="Get started").click()
+
+    # Expects page to have a heading with the name of Installation.
+    expect(page.get_by_role("heading", name="Installation")).to_be_visible()
+```
+
+### How to perform actions(如何执行操作):
+
+#### Navigation(导航):
+
+Most of the tests will start with navigating the page to the URL. After that, the test will be able to interact with the page elements.<br>
+
+大多数测试将从导航页面到 URL 开始。之后，测试将能够与页面元素进行交互。<br>
+
+```python
+page.goto("https://playwright.dev/")
+```
+
+Playwright will wait for the page to reach the load state prior to moving forward.<br>
+
+Playwright 将在页面到达加载状态之前等待，然后再继续。<br>
+
+Learn more about the `[page.goto()](https://playwright.dev/python/docs/api/class-page)` options.<br>
+
+了解更多关于 `page.goto()` 选项的信息。<br>
+
+#### Interactions(交互):
+
+Performing actions starts with locating the elements.Playwright uses `[Locators API](https://playwright.dev/python/docs/locators)` for that.<br>
+
+执行操作从定位元素开始。Playwright 使用 `[Locators API](https://playwright.dev/python/docs/locators)` 来实现这一点。<br> 
+
+Locators represent a way to find element(s) on the page at any moment, learn more about the [**different types**](https://playwright.dev/python/docs/locators) of locators available.<br>
+
+定位器表示在任何时候找到页面上的元素的一种方式，了解更多关于[**不同类型的定位器**](https://playwright.dev/python/docs/locators)的信息。<br>
+
+Playwright will wait for the element to be [**actionable**](https://playwright.dev/python/docs/actionability) prior to performing the action, so there is no need to wait for it to become available.<br>
+
+Playwright 会在执行操作之前等待元素可操作，因此不需要等待它变得可用。<br>
