@@ -315,7 +315,7 @@ Learn more about the `[page.goto()](https://playwright.dev/python/docs/api/class
 
 Performing actions starts with locating the elements.Playwright uses `[Locators API](https://playwright.dev/python/docs/locators)` for that.<br>
 
-执行操作从定位元素开始。Playwright 使用 `[Locators API](https://playwright.dev/python/docs/locators)` 来实现这一点。<br> 
+执行操作从定位元素开始。Playwright 使用 `[Locators API]`(https://playwright.dev/python/docs/locators) 来实现这一点。<br> 
 
 Locators represent a way to find element(s) on the page at any moment, learn more about the [**different types**](https://playwright.dev/python/docs/locators) of locators available.<br>
 
