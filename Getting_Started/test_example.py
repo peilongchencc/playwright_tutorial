@@ -3,7 +3,16 @@ Description: playwright初始测试示例。
 Notes: 
 访问 "https://playwright.dev/" 需要开启代理，否则会提示 "playwright._impl._errors.TimeoutError: Page.goto: Timeout 30000ms exceeded."。
 """
+import sys
 import os
+
+# 获取当前脚本的绝对路径
+current_script_path = os.path.abspath(__file__)
+# 获取当前脚本的父目录的父目录
+parent_directory_of_the_parent_directory = os.path.dirname(os.path.dirname(current_script_path))
+# 将这个目录添加到 sys.path
+sys.path.append(parent_directory_of_the_parent_directory)
+
 from dotenv import load_dotenv
 
 load_dotenv('env_config/.env.local')

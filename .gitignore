@@ -1,6 +1,7 @@
 **/.DS_Store
 **/.vscode
 **/__pycache__
+.pytest_cache
 **/gradio_cached_examples
 baidu_llm_gradio.log
 baidu_llm.log
