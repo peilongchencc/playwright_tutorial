@@ -14,6 +14,7 @@
     - [How to perform actions(如何执行操作):](#how-to-perform-actions如何执行操作)
       - [Navigation(导航):](#navigation导航)
       - [Interactions(交互):](#interactions交互)
+      - [Basic actions(基本操作):](#basic-actions基本操作)
 
 ## Installation
 
@@ -309,7 +310,7 @@ Playwright 将在页面到达加载状态之前等待，然后再继续。<br>
 
 Learn more about the [`page.goto()`](https://playwright.dev/python/docs/api/class-page) options.<br>
 
-了解更多关于 `page.goto()` 选项的信息。<br>
+了解更多关于 [`page.goto()`](https://playwright.dev/python/docs/api/class-page) 选项的信息。<br>
 
 #### Interactions(交互):
 
@@ -324,3 +325,38 @@ Locators represent a way to find element(s) on the page at any moment, learn mor
 Playwright will wait for the element to be [**actionable**](https://playwright.dev/python/docs/actionability) prior to performing the action, so there is no need to wait for it to become available.<br>
 
 Playwright 会在执行操作之前等待元素可操作，因此不需要等待它变得可用。<br>
+
+> 对比selenium在执行操作前，需要自己手动设置等待时间。
+
+```python
+# Create a locator. / 创建一个定位器
+get_started = page.get_by_role("link", name="Get started")
+
+# Click it. / 执行点击
+get_started.click()
+```
+
+In most cases, it'll be written in one line: / 在大多数情况下，它会写成一行：<br>
+
+```python
+page.get_by_role("link", name="Get started").click()
+```
+
+#### Basic actions(基本操作):
+
+This is the list of the most popular Playwright actions.Note that there are many more, so make sure to check the [Locator API](https://playwright.dev/python/docs/api/class-locator) section to learn more about them.<br>
+
+这是最受欢迎的 Playwright 操作列表。请注意，还有更多操作，请确保查看 [Locator API](https://playwright.dev/python/docs/api/class-locator) 部分以了解更多信息。<br>
+
+| Action                        | Description                            |
+|-------------------------------|----------------------------------------|
+| `locator.check()`             | Check the input checkbox               |
+| `locator.click()`             | Click the element                      |
+| `locator.uncheck()`           | Uncheck the input checkbox             |
+| `locator.hover()`             | Hover mouse over the element           |
+| `locator.fill()`              | Fill the form field, input text        |
+| `locator.focus()`             | Focus the element                      |
+| `locator.press()`             | Press single key                       |
+| `locator.set_input_files()`   | Pick files to upload                   |
+| `locator.select_option()`     | Select option in the drop down         |
+
