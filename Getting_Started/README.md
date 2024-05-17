@@ -348,15 +348,27 @@ This is the list of the most popular Playwright actions.Note that there are many
 
 这是最受欢迎的 Playwright 操作列表。请注意，还有更多操作，请确保查看 [Locator API](https://playwright.dev/python/docs/api/class-locator) 部分以了解更多信息。<br>
 
-| Action                        | Description                            |
-|-------------------------------|----------------------------------------|
-| [locator.check()](https://playwright.dev/python/docs/api/class-locator#locator-check)             | Check the input checkbox               |
-| `locator.click()`             | Click the element                      |
-| `locator.uncheck()`           | Uncheck the input checkbox             |
-| `locator.hover()`             | Hover mouse over the element           |
-| `locator.fill()`              | Fill the form field, input text        |
-| `locator.focus()`             | Focus the element                      |
-| `locator.press()`             | Press single key                       |
-| `locator.set_input_files()`   | Pick files to upload                   |
-| `locator.select_option()`     | Select option in the drop down         |
+| Action                        | Description                            | 中文解释                              |
+|-------------------------------|----------------------------------------|---------------------------------------|
+| locator.check()               | Check the input checkbox               | 选中输入复选框                        |
+| locator.click()               | Click the element                      | 点击元素                              |
+| locator.uncheck()             | Uncheck the input checkbox             | 取消选中输入复选框                    |
+| locator.hover()               | Hover mouse over the element           | 鼠标悬停在元素上                      |
+| locator.fill()                | Fill the form field, input text        | 填写表单字段，输入文本                |
+| locator.focus()               | Focus the element                      | 聚焦元素                              |
+| locator.press()               | Press single key                       | 按下单个键                            |
+| locator.set_input_files()     | Pick files to upload                   | 选择文件进行上传                      |
+| locator.select_option()       | Select option in the drop down         | 在下拉菜单中选择选项                  |
 
+
+上述操作都可以在下列网址找到:<br>
+
+```log
+https://playwright.dev/python/docs/api/class-locator
+```
+
+例如 `locator.check()` 对应的网址为:<br>
+
+```log
+https://playwright.dev/python/docs/api/class-locator#locator-check
+```
