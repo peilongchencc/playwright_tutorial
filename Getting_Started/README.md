@@ -350,7 +350,7 @@ This is the list of the most popular Playwright actions.Note that there are many
 
 | Action                        | Description                            |
 |-------------------------------|----------------------------------------|
-| `locator.check()`             | Check the input checkbox               |
+| [locator.check()](https://playwright.dev/python/docs/api/class-locator#locator-check)             | Check the input checkbox               |
 | `locator.click()`             | Click the element                      |
 | `locator.uncheck()`           | Uncheck the input checkbox             |
 | `locator.hover()`             | Hover mouse over the element           |
