@@ -15,6 +15,9 @@
       - [Navigation(导航):](#navigation导航)
       - [Interactions(交互):](#interactions交互)
       - [Basic actions(基本操作):](#basic-actions基本操作)
+    - [How to use assertions(如何使用断言):](#how-to-use-assertions如何使用断言)
+      - [Test isolation(测试隔离):](#test-isolation测试隔离)
+      - [Using fixtures(使用固件):](#using-fixtures使用固件)
 
 ## Installation
 
@@ -157,7 +160,7 @@ def test_get_started_link(page: Page):
     expect(page.get_by_role("heading", name="Installation")).to_be_visible()
 ```
 
-这段代码属于“使用 Playwright 与 Pytest”的类型。这里有几个明显的迹象说明了这一点：<br>
+这段代码属于"使用 Playwright 与 Pytest"的类型。这里有几个明显的迹象说明了这一点：<br>
 
 1. **函数命名**：函数名以 `test_` 开头，这是 Pytest 用于识别测试用例的常用命名约定。
 2. **导入的库**：虽然代码中没有直接导入 `pytest`，但使用了 `expect` 来自 `playwright.sync_api`，这通常与测试断言相关联，用于验证测试预期。
@@ -371,4 +374,157 @@ https://playwright.dev/python/docs/api/class-locator
 
 ```log
 https://playwright.dev/python/docs/api/class-locator#locator-check
+```
+
+### How to use assertions(如何使用断言):
+
+> 在编程和测试领域中，"断言"（Assertion）其实就是 "检查"。通常用来"检查"特定的条件或者表达式是否为真。断言是自动化测试中的一种基本技术，用于确保软件在各种条件下表现出预期的行为。
+
+Playwright includes [assertions](https://playwright.dev/python/docs/test-assertions) that will wait until the expected condition is met.<br>
+
+Playwright 包含会等待预期条件满足的[断言](https://playwright.dev/python/docs/test-assertions)。<br>
+
+Using these assertions allows making the tests non-flaky and resilient.<br>
+
+使用这些断言可以使测试更加稳定和有弹性。<br>
+
+For example, this code will wait until the page gets the title containing "Playwright":<br>
+
+例如，这段代码会一直等待，直到页面的标题包含"Playwright":<br>
+
+```python
+import re
+from playwright.sync_api import expect
+
+# 检查一个页面的标题是否符合特定的正则表达式。
+expect(page).to_have_title(re.compile("Playwright"))
+```
+
+Here is the list of the most popular async assertions. Note that there are [many more](https://playwright.dev/python/docs/test-assertions) to get familiar with:<br>
+
+| Assertion                         | Description                         | 中文解释                      |
+|-----------------------------------|-------------------------------------|-------------------------------|
+| expect(locator).to_be_checked() | Checkbox is checked                 | 复选框被选中                  |
+| expect(locator).to_be_enabled() | Control is enabled                  | 控件被启用                    |
+| expect(locator).to_be_visible() | Element is visible                  | 元素可见                      |
+| expect(locator).to_contain_text() | Element contains text              | 元素包含文本                  |
+| expect(locator).to_have_attribute() | Element has attribute             | 元素具有属性                  |
+| expect(locator).to_have_count() | List of elements has given length   | 元素列表具有指定的数量        |
+| expect(locator).to_have_text()  | Element matches text                | 元素文本匹配                  |
+| expect(locator).to_have_value() | Input element has value             | 输入元素具有值                |
+| expect(page).to_have_title()    | Page has title                      | 页面有标题                    |
+| expect(page).to_have_url()      | Page has URL                        | 页面有URL地址                 |
+
+类似 `expect(locator).to_be_checked()` 对应的链接如下:<br>
+
+```log
+https://playwright.dev/python/docs/api/class-locatorassertions#locator-assertions-to-be-checked
+```
+
+#### Test isolation(测试隔离):
+
+The Playwright Pytest plugin is based on the concept of test fixtures such as the [built-in page fixture](https://playwright.dev/python/docs/test-runners), which is passed into your test.<br>
+
+Playwright Pytest 插件基于测试固件的概念，如内置的页面固件，它会被传递到你的测试中。<br>
+
+Pages are isolated between tests due to the Browser Context, which is equivalent to a brand new browser profile, where every test gets a fresh environment, even when multiple tests run in a single Browser.<br>
+
+由于浏览器上下文的存在，测试之间的页面是隔离的，这相当于一个全新的浏览器配置文件，即使在单个浏览器中运行多个测试，每个测试也会获得一个全新的环境。<br>
+
+🏖️意思就是:每个测试在自己的浏览器上下文中运行，即使在同一个浏览器实例中运行多个测试，每个测试也像在一个全新的浏览器环境中运行一样，从而实现测试隔离。<br>
+
+```python
+# test_example.py
+from playwright.sync_api import Page
+
+def test_example_test(page: Page):
+  pass
+  # "page" belongs to an isolated BrowserContext, created for this specific test.
+  # “page”属于一个为该特定测试创建的独立浏览器上下文。
+
+def test_another_test(page: Page):
+  pass
+  # "page" in this second test is completely isolated from the first test.
+  # 该第二个测试中的“page”与第一个测试完全隔离。
+```
+
+#### Using fixtures(使用固件):
+
+You can use various [fixtures](https://docs.pytest.org/en/6.2.x/fixture.html#autouse-fixtures-fixtures-you-don-t-have-to-request) to execute code before or after your tests and to share objects between them.<br>
+
+你可以使用各种固件在测试前或测试后执行代码，并在它们之间共享对象。<br>
+
+A function scoped fixture e.g. with autouse behaves like a beforeEach/afterEach.<br>
+
+例如，一个带有自动使用的函数范围固件行为类似于 beforeEach/afterEach。<br>
+
+And a module scoped fixture with autouse behaves like a beforeAll/afterAll which runs before all and after all the tests.<br>
+
+而一个带有自动使用的模块范围固件行为类似于 beforeAll/afterAll，它在所有测试之前和之后运行。<br>
+
+```python
+# test_example.py
+import pytest
+from playwright.sync_api import Page, expect
+
+@pytest.fixture(scope="function", autouse=True)
+def before_each_after_each(page: Page):
+    
+    print("before the test runs")
+
+    # Go to the starting url before each test.
+    page.goto("https://playwright.dev/")
+    yield
+    
+    print("after the test runs")
+
+def test_main_navigation(page: Page):
+    # Assertions use the expect API.
+    expect(page).to_have_url("https://playwright.dev/")
+```
+
+运行代码后，终端显示的信息如下:<br>
+
+```log
+(base) root@iZ2zea5v77oawjy2qz7c20Z:/data/playwright_tutorial# pytest Getting_Started/test_example_fixtures.py 
+================================================================= test session starts ==================================================================
+platform linux -- Python 3.11.7, pytest-7.4.0, pluggy-1.0.0
+rootdir: /data/playwright_tutorial
+plugins: base-url-2.1.0, anyio-4.2.0, playwright-0.5.0
+collected 1 item                                                                                                                                       
+
+Getting_Started/test_example_fixtures.py .                                                                                                       [100%]
+
+================================================================== 1 passed in 7.32s ===================================================================
+(base) root@iZ2zea5v77oawjy2qz7c20Z:/data/playwright_tutorial# 
+```
+
+你可能很疑惑，`print`语句的输出为什么没有显示在终端中，这是因为`pytest`默认不会显示测试函数和fixture中的`print`输出。为了查看这些输出，你需要使用`-s`选项运行`pytest`，这样可以让标准输出（即`print`语句的输出）显示在终端中。<br>
+
+> pytest 默认在代码执行成功时是不输出内容的，只有报错的时候输出。
+
+你可以使用以下命令运行`pytest`来查看`print`语句的输出：<br>
+
+```bash
+pytest -s Getting_Started/test_example_fixtures.py
+```
+
+这样你就可以在终端中看到`print`语句的输出。请尝试这个命令，查看是否可以看到`before the test runs`和`after the test runs`的输出。<br>
+
+此时终端将显示:<br>
+
+```log
+(base) root@iZ2zea5v77oawjy2qz7c20Z:/data/playwright_tutorial# pytest -s Getting_Started/test_example_fixtures.py
+================================================================= test session starts ==================================================================
+platform linux -- Python 3.11.7, pytest-7.4.0, pluggy-1.0.0
+rootdir: /data/playwright_tutorial
+plugins: base-url-2.1.0, anyio-4.2.0, playwright-0.5.0
+collected 1 item                                                                                                                                       
+
+Getting_Started/test_example_fixtures.py before the test runs
+.after the test runs
+
+
+================================================================== 1 passed in 1.86s ===================================================================
+(base) root@iZ2zea5v77oawjy2qz7c20Z:/data/playwright_tutorial# 
 ```
