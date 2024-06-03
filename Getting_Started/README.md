@@ -75,7 +75,9 @@ Install the required browsers(安装需要的浏览器):<br>
 playwright install
 ```
 
-playwright不需要像selenium一样下载ChromeDriver。<br>
+> 如果你只想要下载chrome相关驱动，运行 `playwright install chromium` 即可，这样，只会安装与 Chromium（Chrome 的开源版本）相关的内容。
+
+playwright不需要像selenium一样手动下载ChromeDriver。<br>
 
 Playwright 的一个显著优势是它自带了所有支持的浏览器（如 Chromium、Firefox 和 WebKit）的驱动程序。<br>
 
