@@ -18,7 +18,7 @@
       - [5. value（表单控件专属）](#5-value表单控件专属)
       - [6. title属性](#6-title属性)
       - [7. 默认空名称](#7-默认空名称)
-    - [示例及对应 HTML](#示例及对应-html)
+    - [role示例及对应 HTML](#role示例及对应-html)
       - [1. button](#1-button)
       - [2. textbox](#2-textbox)
       - [4. heading](#4-heading)
@@ -305,7 +305,7 @@ page.get_by_role("textbox", name="陈梦宣布退出世界排名")
 
 如果没有以上任何一种来源，`name` 会被视为 **空字符串**。
 
-### 示例及对应 HTML
+### role示例及对应 HTML
 
 #### 1. button
 

@@ -1,6 +1,7 @@
 # playwright_tutorial
 
-python + playwright框架的异步使用。
+python + playwright框架的异步使用，汲取网络所长与个人体验撰写。
+
 
 ## 参考链接:
 
