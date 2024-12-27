@@ -76,7 +76,12 @@ python 版本要求 python3.7+ 版本。
 ### 安装 playwright：
 
 ```bash
+# 安装
 pip install playwright
+# 版本查看
+playwright --version
+# 更新
+pip install --upgrade playwright
 ```
 
 ### 安装所需的浏览器 chromium,firefox 和 webkit：
@@ -97,6 +102,11 @@ https://aka.ms/vs/16/release/VC_redist.x64.exe
 
 直接点击就可以下载了，下载后直接安装即可。
 
+`playwright install`安装的驱动所在路径::
+
+```bash
+ll ~/Library/Caches/ms-playwright/
+```
 
 ### 简单使用
 
