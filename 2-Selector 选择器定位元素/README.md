@@ -7,7 +7,7 @@
   - [text 文本选择器](#text-文本选择器)
   - [Selector 选择器组合定位](#selector-选择器组合定位)
   - [playwright推荐的内置定位器](#playwright推荐的内置定位器)
-  - [get\_by\_role():](#get_by_role)
+  - [page.get\_by\_role():](#pageget_by_role)
     - [参数](#参数)
     - [借助浏览器检查工具查看Role:](#借助浏览器检查工具查看role)
     - [name的确定:](#name的确定)
@@ -25,6 +25,16 @@
       - [5. link](#5-link)
       - [7. img](#7-img)
       - [8. progressbar](#8-progressbar)
+  - [page.get\_by\_label()](#pageget_by_label)
+    - [HTML 基础知识： `<label>` 和输入元素的关系](#html-基础知识-label-和输入元素的关系)
+    - [`<label>` 的作用](#label-的作用)
+    - [用法](#用法)
+      - [1. 使用 `for` 属性](#1-使用-for-属性)
+      - [2. 将控件放在 `<label>` 内](#2-将控件放在-label-内)
+    - [`<label>`与`get_by_label()`匹配方式:](#label与get_by_label匹配方式)
+  - [locator的严格性](#locator的严格性)
+    - [locator.first和wait\_for()和all()](#locatorfirst和wait_for和all)
+  - [locator推荐方式与不推荐方式:](#locator推荐方式与不推荐方式)
 
 
 ## 前言
@@ -201,7 +211,7 @@ await page.locator('form#form').locator('input#kw').fill('Playwright')
 | page.get_by_title()      | 通过 title 属性定位元素。                  |
 | page.get_by_test_id()    | 通过 data-testid 属性定位元素（也可以配置使用其他属性）。 |
 
-## get_by_role():
+## page.get_by_role():
 
 `page.get_by_role()` 是 Playwright 提供的一个功能强大的方法，用于通过 [ARIA roles](https://www.w3.org/TR/wai-aria/#roles) 定位页面元素。
 
@@ -384,3 +394,127 @@ image = page.get_by_role("img", name="Sample Image")
 ```python
 progressbar = page.get_by_role("progressbar", name="50%")
 ```
+
+
+## page.get_by_label()
+
+`get_by_label` 用于根据 `<label>` 元素(也会查找`<input>`元素)或 `aria-labelledby` 属性的文本，以及 `aria-label` 属性，定位输入元素。
+
+---
+
+### HTML 基础知识： `<label>` 和输入元素的关系
+
+`<label>` 是 HTML 中用于表单(`form`)的一个标签，主要用来描述输入控件（如 `<input>`、`<textarea>` 等）。它可以提高表单的可用性和可访问性，特别是对于屏幕阅读器用户。
+
+### `<label>` 的作用
+
+1. 关联说明文本与表单控件：
+
+- `<label>` 通常包含描述性文本，表示输入控件的含义。
+
+- 它可以直接绑定到表单控件，使得点击描述文本时，也可以激活或聚焦对应的表单控件。
+
+2. 提高可用性：
+
+- 用户点击 `<label>` 的文本可以直接激活对应的控件（如文本框或复选框），不需要精准点击控件本身。
+
+- 对屏幕阅读器友好，能更清楚地传达控件的含义。
+
+---
+
+### 用法
+
+`<label>` 有两种方式与表单控件关联：
+
+#### 1. 使用 `for` 属性
+
+- ‼️`for` 的值需要与目标控件的 `id` 值相同。
+
+- 这种方式允许 `<label>` 与控件分开写。
+
+**示例**：
+
+```html
+<label for="username">用户名：</label>
+<input type="text" id="username" name="username">
+```
+
+**效果**：
+
+- 点击 "用户名：" 会自动聚焦到输入框。
+
+#### 2. 将控件放在 `<label>` 内
+
+- 不需要 `for` 属性，控件和描述文本一体化。
+
+**示例**：
+
+```html
+<label>
+   用户名：
+   <input type="text" name="username">
+</label>
+```
+
+**效果**：
+
+- 点击 "用户名：" 也会聚焦输入框。
+
+---
+
+### `<label>`与`get_by_label()`匹配方式:
+
+`page.get_by_label()`的括号中填写的就是 **用户界面上可见的描述文本**。例如针对下列语句playwright的写法为 `page.get_by_label("预约时间")`:
+
+```html
+<label for="appointment">预约时间：</label>
+<input type="datetime-local" id="appointment" name="appointment">
+```
+
+对于盲人或低视力用户，`<label>` 提供的描述信息能够通过屏幕阅读器朗读，从而提高可访问性。
+
+
+## locator的严格性
+
+locator(定位器)是严格的。这意味着所有涉及目标 DOM 元素的定位器操作，**如果匹配到多个元素，就会抛出异常**。例如，如果 DOM 中存在多个按钮，以下调用会抛出错误：
+
+**如果匹配到多个元素将抛出错误：**
+
+```python
+await page.get_by_role("button").click()
+```
+
+另一方面，当您执行多元素操作时，Playwright 能够理解并正确处理。因此，当定位器解析为多个元素时，以下调用可以正常工作：
+
+**适用于多元素操作：**
+
+```python
+await page.get_by_role("button").count()
+```
+
+您可以通过 `locator.first`、`locator.last` 和 `locator.nth()` **指定使用哪个元素，从而显式退出严格性检查**。
+
+如果你的定位器匹配到多个元素，可以使用`locator.first`、`locator.last` 、`locator.nth()`从列表中选择特定的元素，从而显式退出严格性检查。
+
+> `locator.nth()`: 意为返回指向第 n 个匹配元素的定位器。索引从 0 开始，`nth(0)` 选择第一个元素。
+
+```python
+banana = await page.get_by_role("listitem").nth(2)
+```
+
+### locator.first和wait_for()和all()
+
+使用示例:
+
+```python
+# 网页包含 10 个选择器为 `div.tts-button_1V9FA` 的元素。  
+# 由于 `div.tts-button_1V9FA` 元素的样式为 `display: none`，因此必须使用 `state='attached'`。
+locator = page.locator('div.tts-button_1V9FA')
+await locator.first.wait_for(state='attached', timeout=40000)
+search_items = await locator.all()
+```
+
+## locator推荐方式与不推荐方式:
+
+playwright建议优先使用用户可见的定位器，例如`get_by_role`、`get_by_label`，而不是使用与实现紧密绑定的 XPath，因为 XPath 在页面发生变化时很容易失效。
+

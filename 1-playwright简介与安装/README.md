@@ -123,7 +123,7 @@ async def main():
     主要功能包括：
     1. 启动浏览器。
     2. 打开一个新页面并访问百度主页。
-    3. 获取并打印页面标题。
+    3. 获取并打印当前页面的url和页面标题。
     4. 关闭浏览器。
     """
     # 使用 `async_playwright` 进行异步操作
@@ -137,10 +137,13 @@ async def main():
         
         # 导航到百度主页
         await page.goto("https://www.baidu.com")
+
+        # 获取当前页面的 URL，page.url 是同步属性，不需要 await
+        print(f"当前页面的 URL: {page.url}")
         
         # 获取页面标题并打印
         print(await page.title())
-        
+
         # 关闭浏览器
         await browser.close()
 
@@ -151,6 +154,7 @@ asyncio.run(main())
 终端输出:
 
 ```txt
+当前页面的 URL: https://www.baidu.com/
 百度一下，你就知道
 ```
 

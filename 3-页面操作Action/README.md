@@ -14,6 +14,7 @@
 | locator.set_input_files()    | 选择文件上传                    |
 | locator.select_option()      | 在下拉列表中选择选项             |
 
+## 最常用的针对Locator状态的断言
 
 | Assertion                           | Description            |
 |-------------------------------------|------------------------|
